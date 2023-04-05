@@ -1,0 +1,13 @@
+name: MapMediaExt
+version: ${version}
+author: pianoman911
+api-version: '1.19'
+main: de.pianoman911.mapengine.media.MapEngineMedia
+loader: de.pianoman911.mapengine.media.MediaExtensionLoader
+dependencies:
+  - name: MapEngine
+    required: true
+    bootstrap: false
+load-after:
+  - name: MapEngine
+    bootstrap: false
