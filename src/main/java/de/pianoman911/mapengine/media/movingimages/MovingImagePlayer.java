@@ -2,18 +2,15 @@ package de.pianoman911.mapengine.media.movingimages;
 
 import de.pianoman911.mapengine.api.drawing.IDrawingSpace;
 import de.pianoman911.mapengine.api.util.FullSpacedColorBuffer;
-import de.pianoman911.mapengine.media.util.NanoTimer;
-import org.bytedeco.ffmpeg.global.avutil;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MovingImagePlayer {
 
-    static {
-        avutil.av_log_set_level(avutil.AV_LOG_QUIET);
-    }
-
+    private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
     private final FrameSource source;
     private final int bufferSize;
     private final IDrawingSpace drawingSpace;
@@ -27,23 +24,26 @@ public class MovingImagePlayer {
         this.drawingSpace = drawingSpace;
         this.buffer = new ArrayDeque<>(bufferSize);
 
-        new NanoTimer(() -> {
-            if (running && !source.ended()) {
-                FullSpacedColorBuffer frame = source.next();
-                if (frame != null) {
-                    buffer.add(frame);
-                }
+        EXECUTOR.execute(() -> {
+            while (!Thread.interrupted()) {
+                if (running && !source.ended()) {
+                    FullSpacedColorBuffer frame = source.next();
+                    if (frame != null) {
+                        buffer.add(frame);
+                    }
 
-                if (bufferBuilt || buffer.size() >= bufferSize) {
-                    bufferBuilt = true;
-                    if (!buffer.isEmpty()) {
-                        FullSpacedColorBuffer current = buffer.poll();
-                        System.arraycopy(current.buffer(), 0, drawingSpace.buffer().buffer(), 0, current.buffer().length);
-                        drawingSpace.flush();
+                    if (bufferBuilt || buffer.size() >= bufferSize) {
+                        bufferBuilt = true;
+                        if (!buffer.isEmpty()) {
+                            FullSpacedColorBuffer current = buffer.poll();
+                            drawingSpace.buffer(current, 0, 0);
+                            drawingSpace.flush();
+
+                        }
                     }
                 }
             }
-        }, 1000, source.frameRate());
+        });
     }
 
     public FrameSource source() {

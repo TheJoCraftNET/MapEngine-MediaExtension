@@ -2,19 +2,22 @@ package de.pianoman911.mapengine.media.movingimages;
 
 import de.pianoman911.mapengine.api.drawing.IDrawingSpace;
 import de.pianoman911.mapengine.api.util.FullSpacedColorBuffer;
-import de.pianoman911.mapengine.api.util.ImageUtils;
+import de.pianoman911.mapengine.media.converter.MapEngineConverter;
+import org.bytedeco.ffmpeg.global.avutil;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
-import org.bytedeco.javacv.Java2DFrameConverter;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
 public class FFmpegFrameSource implements FrameSource {
 
-    private static final Java2DFrameConverter FRAME_CONVERTER = new Java2DFrameConverter();
+    private static final MapEngineConverter FRAME_CONVERTER = new MapEngineConverter();
+
+    static {
+        avutil.av_log_set_level(avutil.AV_LOG_QUIET);
+    }
 
     private final FFmpegFrameGrabber grabber;
     private final MovingImagePlayer player;
@@ -23,6 +26,12 @@ public class FFmpegFrameSource implements FrameSource {
     private FFmpegFrameSource(FFmpegFrameGrabber grabber, int bufferSize, IDrawingSpace space, boolean resize) {
         this.grabber = grabber;
         this.resize = resize;
+        try {
+            grabber.start();
+            grabber.stop(); // This is needed to get the content information
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
         this.player = new MovingImagePlayer(this, bufferSize, space);
     }
 
@@ -41,11 +50,17 @@ public class FFmpegFrameSource implements FrameSource {
             if (frame == null) {
                 return null;
             }
-            BufferedImage image = FRAME_CONVERTER.convert(frame);
-            if (resize) {
-                image = ImageUtils.resize(image, player.drawingSpace().buffer().x(), player.drawingSpace().buffer().y());
+            FullSpacedColorBuffer buffer = FRAME_CONVERTER.convert(frame);
+            if (buffer == null) {
+                return null;
             }
-            return new FullSpacedColorBuffer(ImageUtils.rgb(image), image.getWidth(), image.getHeight());
+
+            if (resize) {
+                double widthScale = player.drawingSpace().buffer().width() / (double) buffer.width();
+                double heightScale = player.drawingSpace().buffer().height() / (double) buffer.height();
+                buffer = buffer.scale(widthScale, heightScale, true);
+            }
+            return buffer;
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }

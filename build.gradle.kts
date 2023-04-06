@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "de.pianoman911"
-version = "1.0.3"
+version = "1.0.4"
 
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     compileOnlyApi("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
-    compileOnlyApi("de.pianoman911:mapengine-api:1.4.0")
+    compileOnlyApi("de.pianoman911:mapengine-api:1.4.3")
     api("org.bstats:bstats-bukkit:3.0.2")
 
     compileOnlyApi("org.bytedeco:javacpp:1.5.8")
