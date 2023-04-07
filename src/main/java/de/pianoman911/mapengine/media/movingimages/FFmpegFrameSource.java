@@ -26,12 +26,6 @@ public class FFmpegFrameSource implements FrameSource {
     private FFmpegFrameSource(FFmpegFrameGrabber grabber, int bufferSize, IDrawingSpace space, boolean resize) {
         this.grabber = grabber;
         this.resize = resize;
-        try {
-            grabber.start();
-            grabber.stop(); // This is needed to get the content information
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
         this.player = new MovingImagePlayer(this, bufferSize, space);
     }
 
@@ -41,6 +35,15 @@ public class FFmpegFrameSource implements FrameSource {
 
     public FFmpegFrameSource(URI url, int bufferSize, IDrawingSpace space, boolean resize) {
         this(new FFmpegFrameGrabber(url.toString()), bufferSize, space, resize);
+    }
+
+    public FFmpegFrameSource(URI url, int bufferSize, IDrawingSpace space, boolean resize, boolean host, String format) {
+        this(new FFmpegFrameGrabber(url.toString()), bufferSize, space, resize);
+
+        if (host) {
+            grabber.setOption("listen", "1");
+            grabber.setFormat(format);
+        }
     }
 
     @Override
@@ -104,5 +107,9 @@ public class FFmpegFrameSource implements FrameSource {
 
     public MovingImagePlayer player() {
         return player;
+    }
+
+    public FFmpegFrameGrabber grabber() {
+        return grabber;
     }
 }
