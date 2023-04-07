@@ -19,7 +19,8 @@ dependencies {
 
     compileOnlyApi("org.bytedeco:javacpp:1.5.8")
     compileOnlyApi("org.bytedeco:ffmpeg:1.5.8")
-    compileOnlyApi("org.bytedeco:javacv:1.5.8")
+    compileOnlyApi("org.bytedeco:ffmpeg:5.1.2-1.5.8")
+    compileOnlyApi("org.bytedeco:javacv:1.5.8") { isTransitive = false }
 
 }
 
@@ -35,7 +36,7 @@ tasks {
         dependsOn(shadowJar)
     }
 
-    processResources{
+    processResources {
         filesMatching("paper-plugin.yml") {
             expand(
                 "version" to project.version,
