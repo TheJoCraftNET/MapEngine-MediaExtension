@@ -7,6 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.LockSupport;
 
 public class MovingImagePlayer {
 
@@ -27,6 +28,7 @@ public class MovingImagePlayer {
         EXECUTOR.execute(() -> {
             while (!Thread.interrupted()) {
                 if (running && !source.ended()) {
+                    long start = System.nanoTime();
                     FullSpacedColorBuffer frame = source.next();
                     if (frame != null) {
                         buffer.add(frame);
@@ -38,8 +40,13 @@ public class MovingImagePlayer {
                             FullSpacedColorBuffer current = buffer.poll();
                             drawingSpace.buffer(current, 0, 0);
                             drawingSpace.flush();
-
                         }
+                    }
+                    long offset = (long) ((1.0 / source.frameRate()) * 1000000000);
+                    long end = System.nanoTime();
+                    long sleep = offset - (end - start);
+                    if (sleep > 0) {
+                        LockSupport.parkNanos(sleep);
                     }
                 }
             }
