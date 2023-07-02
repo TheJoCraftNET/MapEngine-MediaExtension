@@ -17,10 +17,9 @@ dependencies {
     compileOnlyApi("de.pianoman911:mapengine-api:1.4.3")
     api("org.bstats:bstats-bukkit:3.0.2")
 
-    compileOnlyApi("org.bytedeco:javacpp:1.5.8")
-    compileOnlyApi("org.bytedeco:ffmpeg:1.5.8")
-    compileOnlyApi("org.bytedeco:ffmpeg:5.1.2-1.5.8")
-    compileOnlyApi("org.bytedeco:javacv:1.5.8") { isTransitive = false }
+    compileOnlyApi("org.bytedeco:javacpp:1.5.9")
+    compileOnlyApi("org.bytedeco:ffmpeg:6.0-1.5.9")
+    compileOnlyApi("org.bytedeco:javacv:1.5.9") { isTransitive = false }
 
 }
 
