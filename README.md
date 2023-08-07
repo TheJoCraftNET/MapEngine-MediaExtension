@@ -4,7 +4,7 @@
 
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/TheJoCraftNET/MapEngine-MediaExtension?style=flat-square)](#)
 [![AGPLv3 License](https://img.shields.io/badge/License-AGPL%20v3-yellow.svg?style=flat-square)](https://opensource.org/license/agpl-v3/)
-[![Status Alpha](https://img.shields.io/badge/Status-Alpha-red?style=flat-square)](#)
+[![Status Beta](https://img.shields.io/badge/Status-Beta-orange?style=flat-square)](#)
 
 ## Description
 
