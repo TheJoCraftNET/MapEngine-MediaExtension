@@ -30,9 +30,9 @@ public class MapEngineConverter extends FrameConverter<FullSpacedColorBuffer> {
 
         for (int y = 0; y < frame.imageHeight; y++) {
             for (int x = 0; x < frame.imageWidth; x++) {
-                int r = buffer.get(index) & 0xFF;
+                int b = buffer.get(index) & 0xFF;
                 int g = buffer.get(index + 1) & 0xFF;
-                int b = buffer.get(index + 2) & 0xFF;
+                int r = buffer.get(index + 2) & 0xFF;
                 int a = hasAlpha ? buffer.get(index + 3) & 0xFF : 255;
                 data[y * frame.imageWidth + x] = (a << 24) | (r << 16) | (g << 8) | b;
                 index += frame.imageChannels;
