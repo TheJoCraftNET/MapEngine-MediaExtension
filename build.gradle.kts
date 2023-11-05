@@ -23,7 +23,7 @@ repositories {
 
 dependencies {
     compileOnlyApi("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
-    compileOnlyApi("de.pianoman911:mapengine-api:1.4.3")
+    compileOnlyApi("de.pianoman911:mapengine-api:1.6.2")
     api("org.bstats:bstats-bukkit:3.0.2")
 
     compileOnlyApi("org.bytedeco:javacpp:1.5.9")
@@ -95,7 +95,7 @@ paper {
     apiVersion = "1.19"
     authors = listOf("pianoman911")
 
-    name = rootProject.name
+    name = "MapMediaExt"
     description = "$gitHash/$gitBranch ($gitTag), $compileDate"
 
     serverDependencies {
