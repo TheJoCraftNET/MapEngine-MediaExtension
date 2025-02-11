@@ -60,7 +60,7 @@ The stream source is 1920x1080@20fps streamed with OBS.
     <dependency>
         <groupId>de.pianoman911</groupId>
         <artifactId>mapengine-mediaext</artifactId>
-        <version>1.1.3</version>
+        <version>1.1.4</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
@@ -80,7 +80,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'de.pianoman911:mapengine-mediaext:1.1.3'
+    compileOnly 'de.pianoman911:mapengine-mediaext:1.1.4'
 }
 ```
 
@@ -97,7 +97,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("de.pianoman911:mapengine-mediaext:1.1.3")
+    compileOnly("de.pianoman911:mapengine-mediaext:1.1.4")
 }
 ```
 
