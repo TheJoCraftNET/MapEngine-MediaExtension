@@ -12,8 +12,8 @@ import java.util.Locale;
 
 public final class JavaCvLoader {
 
-    private static final String JAVACV_VERSION = "1.5.10";
-    private static final String FFMPEG_VERSION = "6.1.1";
+    private static final String JAVACV_VERSION = "1.5.11";
+    private static final String FFMPEG_VERSION = "7.1";
 
     private static final String PAPER_REPO_URL = "https://repo.papermc.io/repository/maven-public/";
     private static final String GROUP_ID = "org.bytedeco";
